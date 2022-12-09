@@ -1,5 +1,7 @@
 {
     "emmet.includeLanguages": {
         "javascript": "javascriptreact"
-    }
+    },
+    "prettier.bracketSameLine": false,
+    "prettier.printWidth": 250
 }

@@ -11,7 +11,7 @@ export const Notes = () => {
   }, []);
 
   const ref = useRef(null);
-  const refClose = useRef(null)
+  const refClose = useRef(null);
 
   const [note, setNote] = useState({
     _id: "",
@@ -31,10 +31,11 @@ export const Notes = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    refClose.current.click()
-    
-    editNote(note._id, note.title, note.description, note.tag)
+    refClose.current.click();
 
+    editNote(note._id, note.title, note.description, note.tag);
+
+    setNote({ title: "", description: "", tag: "" });
   };
 
   return (
@@ -42,36 +43,19 @@ export const Notes = () => {
       <h1>Your notes here</h1>
 
       {/* Button trigger modal */}
-      <button
-        ref={ref}
-        type="button"
-        className="btn btn-primary d-none"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-      >
+      <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Launch demo modal
       </button>
 
       {/* Modal */}
-      <div
-        className="modal fade"
-        id="exampleModal"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
+      <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
                 Update Note
               </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <form>
@@ -79,78 +63,35 @@ export const Notes = () => {
                   <label htmlFor="title" className="form-label">
                     Note Title
                   </label>
-                  <input
-                    value={note.title}
-                    type="text"
-                    className="form-control"
-                    id="title"
-                    name="title"
-                    aria-describedby="emailHelp"
-                    onChange={onChange}
-                  />
+                  <input value={note.title} type="text" minLength={3} required className="form-control" id="title" name="title" aria-describedby="emailHelp" onChange={onChange} />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="description" className="form-label">
                     Note Desctiption
                   </label>
-                  <textarea
-                  value={note.description}
-                    className="form-control"
-                    id="description"
-                    name="description"
-                    rows="3"
-                    onChange={onChange}
-                  ></textarea>
+                  <textarea value={note.description} className="form-control" minLength={5} required id="description" name="description" rows="3" onChange={onChange}></textarea>
                 </div>
                 <div className="mb-3">
                   <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="tag"
-                      onChange={onChange}
-                      id="general"
-                      value="general"
-                    />
+                    <input className="form-check-input" type="radio" name="tag" onChange={onChange} id="general" value="general" />
                     <label className="form-check-label" htmlFor="general">
                       General
                     </label>
                   </div>
                   <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="tag"
-                      onChange={onChange}
-                      id="important"
-                      value="important"
-                    />
+                    <input className="form-check-input" type="radio" name="tag" onChange={onChange} id="important" value="important" />
                     <label className="form-check-label" htmlFor="important">
                       Important
                     </label>
                   </div>
                   <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="tag"
-                      onChange={onChange}
-                      id="todo"
-                      value="todo"
-                    />
+                    <input className="form-check-input" type="radio" name="tag" onChange={onChange} id="todo" value="todo" />
                     <label className="form-check-label" htmlFor="todo">
                       ToDo
                     </label>
                   </div>
                   <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="tag"
-                      onChange={onChange}
-                      id="other"
-                      value="other"
-                    />
+                    <input className="form-check-input" type="radio" name="tag" onChange={onChange} id="other" value="other" />
                     <label className="form-check-label" htmlFor="other">
                       Other
                     </label>
@@ -159,19 +100,10 @@ export const Notes = () => {
               </form>
             </div>
             <div className="modal-footer">
-              <button
-                ref={refClose}
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                 Not now
               </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleClick}
-              >
+              <button disabled={note.title.length < 3 || note.description.length < 5} type="button" className="btn btn-primary" onClick={handleClick}>
                 Update
               </button>
             </div>
@@ -179,12 +111,13 @@ export const Notes = () => {
         </div>
       </div>
 
+      {/* If there is no notes show NULL image */}
+      {notes.length === 0 && <img className="my-3" src="https://leetcode.com/_next/static/images/null_light-53585615fd723ba992bd2df7a10d10d1.png" alt="No notes to display" />}
+
       {/* traverse through Notes */}
       <div className="row">
         {notes.map((note) => {
-          return (
-            <NoteItem key={note._id} updateNote={updateNote} note={note} />
-          );
+          return <NoteItem key={note._id} updateNote={updateNote} note={note} />;
         })}
       </div>
     </div>

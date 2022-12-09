@@ -17,6 +17,7 @@ export const AddNoteForm = () => {
   const addNoteBtnClick = (e) => {
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
+    setNote({ title: "", description: "", tag: "" });
   };
 
   return (
@@ -33,6 +34,9 @@ export const AddNoteForm = () => {
             </label>
             <input
               type="text"
+              value={note.title}
+              minLength={3}
+              required
               className="form-control"
               id="title"
               name="title"
@@ -45,8 +49,11 @@ export const AddNoteForm = () => {
               Note Desctiption
             </label>
             <textarea
+              value={note.description}
               className="form-control"
               id="description"
+              minLength={5}
+              required
               name="description"
               rows="3"
               onChange={onChange}
@@ -108,6 +115,7 @@ export const AddNoteForm = () => {
           </div>
           <button
             type="submit"
+            disabled={note.title.length < 3 || note.description.length < 5}
             className="btn btn-primary"
             onClick={addNoteBtnClick}
           >

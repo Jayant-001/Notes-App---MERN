@@ -27,10 +27,12 @@ router.post(
     try {
       // check if email already exist
       let user = await User.findOne({ email: req.body.email });
+      let success = false;
+
       if (user) {
         return res
           .status(400)
-          .json({ error: "User with this email is alreay exists" });
+          .json({ success, error: "User with this email is alreay exists" });
       }
 
       // ecnrypting password
@@ -57,7 +59,8 @@ router.post(
 
       const authToken = jwt.sign(data, JWT_SECRET);
 
-      res.json({ authToken });
+      success = true
+      res.status(200).json({ success, authToken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal server error occurred");
@@ -84,14 +87,15 @@ router.post(
 
     try {
       let user = await User.findOne({ email });
+      let success = false;
       if (!user) {
-        return res.status(400).json({ error: "Incorrect credentials" });
+        return res.status(400).json({ success, error: "Incorrect credentials" });
       }
 
       const passwordCompare = await bcrypt.compare(password, user.password);
 
       if (!passwordCompare) {
-        return res.status(400).json({ error: "Incorrect credentials" });
+        return res.status(400).json({ success,  error: "Incorrect credentials" });
       }
 
       const data = {
@@ -101,8 +105,8 @@ router.post(
       };
 
       const authToken = jwt.sign(data, JWT_SECRET);
-
-      res.json({ authToken });
+      success = true
+      res.status(200).json({ success, authToken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal server error occurred");

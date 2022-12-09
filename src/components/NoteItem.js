@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import noteContext from "../context/notes/NoteContext";
 
 // get a single note fromm Home
-export const NoteItem = ({ note }) => {
-  const { updateNote, deleteNote } = useContext(noteContext);
+export const NoteItem = ({ note, updateNote }) => {
+  const { deleteNote } = useContext(noteContext);
 
   const deleteNoteBtnClick = (id) => {
     deleteNote(id);
@@ -23,7 +23,7 @@ export const NoteItem = ({ note }) => {
             />
             {/* </a> */}
             {/* <a href="/" className="btn btn-danger mx-2"> */}
-            <i className="btn btn-light fa-solid fa-pen-to-square" />
+            <i className="btn btn-light fa-solid fa-pen-to-square" onClick={() => updateNote(note)} />
             {/* </a> */}
           </div>
         </div>
